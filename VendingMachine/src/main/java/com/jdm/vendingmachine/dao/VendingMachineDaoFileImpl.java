@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.jdm.vendingmachine.dao;
 
 import com.jdm.vendingmachine.dto.Change;
@@ -48,8 +42,10 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     }
     
     @Override
-    public BigDecimal getInsertedMoney() {
-        return this.insertedMoney;
+    public BigDecimal returnInsertedMoney() {
+        BigDecimal tmp = this.insertedMoney;
+        this.insertedMoney.equals(0);       //Set insertedMoney to 0 since it's being returned to user
+        return tmp;
     }
     
     @Override
@@ -58,19 +54,22 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     }
 
     @Override
-    public void vendItem(String choice) {
+    public void vendItem(String choice){
         this.getItem(choice).vend();
     }
 
     @Override
-    public Change calculateChange(String choice) {
-        return new Change(insertedMoney.subtract(getItem(choice).getPrice()));
+    public Change calculateChange(String choice){
+        BigDecimal tmp = this.insertedMoney;
+        this.insertedMoney.equals(0);       //Set inserted money to zero as change is being returned
+        return new Change(tmp.subtract(getItem(choice).getPrice()));
     }
     
     @Override
-    public List<Item> getAllItems() {
+    public List<Item> getAllItems(){
         return new ArrayList<>(inventory.values());
     }  
+    
     
     public Item unmarshallItem(String itemAsText) {
         String[] itemTokens = itemAsText.split(DELIMITER);
@@ -78,13 +77,12 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         return itemFromFile;
     }
    
-    public String marshallItem(Item item)
-    {
+    public String marshallItem(Item item){
         String itemText = item.getName() + DELIMITER + item.getPrice() + DELIMITER + item.getStock() + DELIMITER + item.getMenuKey();
-        
         return itemText;
     }
     
+    @Override
     public void loadInventory() throws ItemPersistenceException {
         Scanner scanner;
 
@@ -116,6 +114,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         scanner.close();
     }
     
+    @Override
     public void writeInventory() throws ItemPersistenceException{
         
         PrintWriter out;

@@ -33,7 +33,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     }
     
     @Override
-    public void setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException{
+    public boolean setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException{
         //Check business rules here: negative values, too large of values
         if(money.compareTo(new BigDecimal("50")) > 0){
             throw new OverPayException("Machine doesn't accept more than $50");
@@ -43,13 +43,13 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         }
         //call dao setinsertedmoney
         dao.setInsertedMoney(money);
-        
+        return true;
     }
 
     @Override
     public Change vendItem(String choice) throws InsufficientFundsException, NoItemInventoryException{
         //Using choice, check price of choice <= dao.insertedMoney
-        if(dao.getInsertedMoney().compareTo(dao.getItem(choice).getPrice()) < 0){
+        if(dao.returnInsertedMoney().compareTo(dao.getItem(choice).getPrice()) < 0){
             throw new InsufficientFundsException("Not enough money inserted to purchase item.");
         }
         else if(dao.getItem(choice).getStock() == 0){
@@ -61,10 +61,10 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
             return dao.calculateChange(choice);
         }
     }
-
+    
     @Override
-    public BigDecimal calculateChange(Item item) { //Not needed in service layer?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Change returnMoney(){
+        return new Change(dao.returnInsertedMoney());
     }
 
     @Override
@@ -89,7 +89,6 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     @Override
     public List<Item> getAllItems() {
-        
         return dao.getAllItems();
     }
 

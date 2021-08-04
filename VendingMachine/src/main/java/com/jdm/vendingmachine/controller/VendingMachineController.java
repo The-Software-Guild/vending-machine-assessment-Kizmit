@@ -9,10 +9,12 @@ package com.jdm.vendingmachine.controller;
 import com.jdm.vendingmachine.dao.InsufficientFundsException;
 import com.jdm.vendingmachine.dao.ItemPersistenceException;
 import com.jdm.vendingmachine.dao.NoItemInventoryException;
+import com.jdm.vendingmachine.dto.Change;
 import com.jdm.vendingmachine.service.InvalidInputException;
 import com.jdm.vendingmachine.service.OverPayException;
 import com.jdm.vendingmachine.service.VendingMachineServiceLayer;
 import com.jdm.vendingmachine.ui.VendingMachineView;
+import java.math.BigDecimal;
 
 /**
  *
@@ -37,20 +39,15 @@ public class VendingMachineController {
             service.loadInventory();
             while(!exit){
 
-                //Display vending machine menu
+                view.displayItemMenuChoices(service.getAllItems());
                 switch(view.getMainMenuChoice()){
                     case 1:
                         makePurchase();
                         break;
                     case 2:
                         exit = true;
-                        //Quit
+                        break;
                 }
-                //Prompt user to make vending choice
-                //Calculate outcome (not enough money, vend item)
-                //calculate change
-                //display vending machine menu
-
             }
             service.writeInventory();
         }
@@ -60,13 +57,27 @@ public class VendingMachineController {
     }
 
     private void makePurchase() {
-        
+        Change change = null;
+        boolean validInsert = false;
         try{ 
-            service.setInsertedMoney(view.inputMoney()); 
-            service.vendItem(view.getItemMenuChoice(service.getAllItems()));
+            validInsert = service.setInsertedMoney(view.inputMoney()); 
+            change = service.vendItem(view.getItemMenuChoice());
+            view.displayVended();
         }
-        catch(InsufficientFundsException | NoItemInventoryException |InvalidInputException | OverPayException e){ 
+        catch(InsufficientFundsException | NoItemInventoryException | InvalidInputException | OverPayException e){ 
             view.displayErrorMessage(e.getMessage()); 
         }
+        finally{
+            if(validInsert){
+                handleChange(change);
+            }
+        }
+    }
+
+    private void handleChange(Change change) {
+        if(change == null){ //VM errored out because of lack of funds/stock; return user money
+            change = service.returnMoney();
+        }
+        view.displayChange(change);
     }
 }

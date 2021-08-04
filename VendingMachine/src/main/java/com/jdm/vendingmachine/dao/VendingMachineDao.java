@@ -22,7 +22,7 @@ public interface VendingMachineDao {
      */
     public void setInsertedMoney(BigDecimal money);
     
-    public BigDecimal getInsertedMoney();
+    public BigDecimal returnInsertedMoney();
     
     public Item getItem(String menuKey);
     

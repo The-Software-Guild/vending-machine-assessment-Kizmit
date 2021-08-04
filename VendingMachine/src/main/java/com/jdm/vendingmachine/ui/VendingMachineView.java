@@ -6,6 +6,7 @@
 
 package com.jdm.vendingmachine.ui;
 
+import com.jdm.vendingmachine.dto.Change;
 import com.jdm.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,10 +27,10 @@ public class VendingMachineView {
     }
 
     public int getMainMenuChoice() {
-        io.print("=====MAIN MENU OPTIONS=====");
-        io.print("1. Purchase");
+        io.print("=====ACTIONS=====");
+        io.print("1. Make a purchase");
         io.print("2. Quit");
-        return io.readInt("Select from the above menu options:", 1,2);
+        return io.readInt("Select an action: ", 1,2);
     }
 
     public BigDecimal inputMoney() {
@@ -42,14 +43,27 @@ public class VendingMachineView {
 
 
 
-    public String getItemMenuChoice(List<Item> allItems) {
-        String fItemString;
-        io.print("=====VENDING OPTIONS=====");
+    public void displayItemMenuChoices(List<Item> allItems) {
+        String fItemString, fItemHeader;
+        fItemHeader = String.format("%-10s%-30s%-10s%-5s\n", "Button", "Item Name", "Price", "Stock");
+        io.print("================VENDING OPTIONS================");
+        io.print(fItemHeader);
         for(Item item : allItems){
-            fItemString = String.format("%-10s%-30s%-5s%-3s\n", item.getMenuKey(), item.getName(), item.getPrice(), item.getStock());
+            fItemString = String.format("%-10s%-30s$%-10s%-5s\n", item.getMenuKey(), item.getName(), item.getPrice(), item.getStock());
             io.print(fItemString);
         }
-        return io.readString("Select from the above menu options:");
+    }
+    
+    public String getItemMenuChoice(){
+        return io.readString("Select an item from the vending options:");
+    }
+
+    public void displayChange(Change change) {
+        io.print(change.toString());
+    }
+
+    public void displayVended() {
+        io.print("ITEM VENDED. RETRIEVE ITEM FROM THE OPENING.");
     }
     
 }

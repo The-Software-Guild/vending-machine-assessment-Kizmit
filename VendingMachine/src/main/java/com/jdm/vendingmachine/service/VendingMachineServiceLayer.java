@@ -19,11 +19,11 @@ import java.util.List;
  */
 public interface VendingMachineServiceLayer {
     
-    public void setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException;
+    public boolean setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException;
     
     public Change vendItem(String choice) throws InsufficientFundsException, NoItemInventoryException;
     
-    public BigDecimal calculateChange(Item item);
+    public Change returnMoney();
     
     public List<Item> getAllItems();
     
