@@ -5,20 +5,38 @@
  */
 package com.jdm.vendingmachine.dao;
 
+import com.jdm.vendingmachine.dto.Change;
+import com.jdm.vendingmachine.dto.Item;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
  * @author Joe
  */
 public interface VendingMachineDao {
-    public void setInsertedMoney();
 
-    public void getItem();
+    /**
+     *
+     * @param money
+     */
+    public void setInsertedMoney(BigDecimal money);
     
-    public void vendItem();
+    public BigDecimal getInsertedMoney();
     
-    public BigDecimal calculateChange();
+    public Item getItem(String menuKey);
+    
+    public void vendItem(String choice);
+    
+    public Change calculateChange(String choice);
+
+    public void loadInventory() throws ItemPersistenceException;
+    
+    public void writeInventory() throws ItemPersistenceException;
+
+    public List<Item> getAllItems();
+
+   
     
     
 }

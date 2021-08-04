@@ -1,0 +1,3 @@
+TestItem1::3.50::9::A1
+TestItem2::2.50::9::A2
+TestItem3::1.75::10::A3

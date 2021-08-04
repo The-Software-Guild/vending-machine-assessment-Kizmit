@@ -13,7 +13,7 @@ package com.jdm.vendingmachine.dao;
  * @email joedmcadams@gmail.com
  * 
  */
-public class ItemAuditDaoImpl implements ItemAuditDao {
+public class VendingMachineAuditDaoImpl implements VendingMachineAuditDao {
 
     @Override
     public void writeAuditEntry() {

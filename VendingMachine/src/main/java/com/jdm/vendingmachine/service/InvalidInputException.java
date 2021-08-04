@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.jdm.vendingmachine.dao;
+package com.jdm.vendingmachine.service;
 
 /**
  *
@@ -12,9 +12,10 @@ package com.jdm.vendingmachine.dao;
  * @email joedmcadams@gmail.com
  * 
  */
-public class InsufficientFundsException extends Exception {
-    
-    public InsufficientFundsException(String message) {
+public class InvalidInputException extends Exception {
+
+    public InvalidInputException(String message) {
         super(message);
     }
+
 }

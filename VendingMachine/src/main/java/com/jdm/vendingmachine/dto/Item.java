@@ -17,13 +17,23 @@ import java.util.Objects;
  */
 
 public class Item {
-    private String name, stock;
+    private String name, menuKey;
+    private int stock;
     private BigDecimal price;
     
-    public Item(String name, String price, String stock){
+    public Item(String name, String price, String stock, String menuKey){
         this.name = name;
-        this.stock = stock;
+        this.stock = Integer.parseInt(stock);
         this.price = new BigDecimal(price);
+        this.menuKey = menuKey;
+    }
+
+    public void setMenuKey(String menuKey) {
+        this.menuKey = menuKey;
+    }
+
+    public String getMenuKey() {
+        return menuKey;
     }
 
     public void setName(String name) {
@@ -31,7 +41,7 @@ public class Item {
     }
 
     public void setStock(String stock) {
-        this.stock = stock;
+        this.stock = Integer.parseInt(stock);
     }
 
     public void setPrice(BigDecimal price) {
@@ -42,7 +52,7 @@ public class Item {
         return name;
     }
 
-    public String getStock() {
+    public int getStock() {
         return stock;
     }
 
@@ -50,38 +60,8 @@ public class Item {
         return price;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.name);
-        hash = 83 * hash + Objects.hashCode(this.stock);
-        hash = 83 * hash + Objects.hashCode(this.price);
-        return hash;
+    public void vend() {
+        stock--;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Item other = (Item) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.stock, other.stock)) {
-            return false;
-        }
-        if (!Objects.equals(this.price, other.price)) {
-            return false;
-        }
-        return true;
-    }
-    
-    
+ 
 }

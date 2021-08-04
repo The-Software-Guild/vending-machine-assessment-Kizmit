@@ -5,18 +5,30 @@
  */
 package com.jdm.vendingmachine.service;
 
+import com.jdm.vendingmachine.dao.InsufficientFundsException;
+import com.jdm.vendingmachine.dao.ItemPersistenceException;
+import com.jdm.vendingmachine.dao.NoItemInventoryException;
+import com.jdm.vendingmachine.dto.Change;
+import com.jdm.vendingmachine.dto.Item;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
  * @author Joe
  */
 public interface VendingMachineServiceLayer {
-    public void setInsertedMoney();
     
-    public void vendItem();
+    public void setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException;
     
-    public BigDecimal calculateChange();
+    public Change vendItem(String choice) throws InsufficientFundsException, NoItemInventoryException;
     
+    public BigDecimal calculateChange(Item item);
+    
+    public List<Item> getAllItems();
+    
+    public void loadInventory() throws ItemPersistenceException;
+    
+    public void writeInventory() throws ItemPersistenceException;
    
 }

@@ -6,6 +6,8 @@
 
 package com.jdm.vendingmachine.dto;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author Joe McAdams
@@ -15,11 +17,9 @@ package com.jdm.vendingmachine.dto;
 public class Change {
     private enum Coins{ QUARTER, DIME, NICKEL};
     int numOfQuarters, numOfDimes, numOfNickels;
-
-    public Change(int numOfQuarters, int numOfDimes, int numOfNickels) {
-        this.numOfQuarters = numOfQuarters;
-        this.numOfDimes = numOfDimes;
-        this.numOfNickels = numOfNickels;
+    BigDecimal amount;
+    public Change(BigDecimal change) {
+        this.amount = change;
     }
 
     public int getNumOfQuarters() {

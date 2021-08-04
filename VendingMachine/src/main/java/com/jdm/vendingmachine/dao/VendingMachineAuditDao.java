@@ -9,6 +9,6 @@ package com.jdm.vendingmachine.dao;
  *
  * @author Joe
  */
-public interface ItemAuditDao {
+public interface VendingMachineAuditDao {
     public void writeAuditEntry();
 }

@@ -14,10 +14,10 @@ import java.io.FileNotFoundException;
  * @email joedmcadams@gmail.com
  * 
  */
-class ItemPersistenceException extends Exception {
+public class ItemPersistenceException extends Exception {
 
-    ItemPersistenceException(String msg, Exception e) {
-        super(msg);
+    public ItemPersistenceException(String message) {
+        super(message);
     }
 
 }

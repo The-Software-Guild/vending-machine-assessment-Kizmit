@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.jdm.vendingmachine.ui;
+package com.jdm.vendingmachine.service;
 
 /**
  *
@@ -12,7 +12,10 @@ package com.jdm.vendingmachine.ui;
  * @email joedmcadams@gmail.com
  * 
  */
-public class DvdLibraryView {
-    private UserIO io;
-    
+public class OverPayException extends Exception {
+
+    public OverPayException(String message) {
+        super(message);
+    }
+
 }

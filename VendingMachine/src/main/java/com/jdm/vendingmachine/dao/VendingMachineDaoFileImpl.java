@@ -6,7 +6,11 @@
 
 package com.jdm.vendingmachine.dao;
 
+import com.jdm.vendingmachine.dto.Change;
 import com.jdm.vendingmachine.dto.Item;
+import com.jdm.vendingmachine.ui.UserIO;
+import com.jdm.vendingmachine.ui.UserIOConsoleImpl;
+import com.jdm.vendingmachine.ui.VendingMachineView;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -28,10 +33,12 @@ import java.util.Scanner;
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
     private final String ITEM_FILE;
     private static final String DELIMITER = "::";
+    private BigDecimal insertedMoney;
     private HashMap<String, Item> inventory;
     
     public VendingMachineDaoFileImpl(){
         ITEM_FILE = "inventory.txt";
+        inventory = new HashMap<>();
     }
 
     public VendingMachineDaoFileImpl(String ItemTextFile){ //For testing
@@ -39,43 +46,49 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     }
     
     @Override
-    public void setInsertedMoney() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void getItem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void vendItem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public BigDecimal calculateChange() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setInsertedMoney(BigDecimal money) {
+        this.insertedMoney = money;
     }
     
-    private List<Item> getAllItems() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public BigDecimal getInsertedMoney() {
+        return this.insertedMoney;
+    }
+    
+    @Override
+    public Item getItem(String menuKey) {
+        return inventory.get(menuKey);
+    }
+
+    @Override
+    public void vendItem(String choice) {
+        this.getItem(choice).vend();
+    }
+
+    @Override
+    public Change calculateChange(String choice) {
+        return new Change(insertedMoney.subtract(getItem(choice).getPrice()));
+    }
+    
+    @Override
+    public List<Item> getAllItems() {
+        return new ArrayList<>(inventory.values());
     }  
     
     public Item unmarshallItem(String itemAsText) {
         String[] itemTokens = itemAsText.split(DELIMITER);
-        Item itemFromFile = new Item(itemTokens[0], itemTokens[1], itemTokens[2]);
+        Item itemFromFile = new Item(itemTokens[0], itemTokens[1], itemTokens[2], itemTokens[3]);
         return itemFromFile;
     }
    
     public String marshallItem(Item item)
     {
-        String itemText = item.getName() + DELIMITER + item.getPrice() + DELIMITER + item.getStock();
+        String itemText = item.getName() + DELIMITER + item.getPrice() + DELIMITER + item.getStock() + DELIMITER + item.getMenuKey();
         
         return itemText;
     }
     
-    private void loadInventory() throws ItemPersistenceException {
+    public void loadInventory() throws ItemPersistenceException {
         Scanner scanner;
 
         try {
@@ -83,7 +96,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
             scanner = new Scanner(new BufferedReader(new FileReader(ITEM_FILE)));
         } 
         catch (FileNotFoundException e){
-            throw new ItemPersistenceException("Couldn't load items into inventory.", e);
+            throw new ItemPersistenceException("Couldn't load items into inventory.");
         }
         
         String currentLine;
@@ -97,16 +110,16 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
             currentLine = scanner.nextLine();
             // unmarshall the line into a Student
             currentItem = unmarshallItem(currentLine);
-
+               
             // We are going to use the student id as the map key for our student object.
             // Put currentStudent into the map using student id as the key
-            inventory.put(currentItem.getName(), currentItem);
+            inventory.put(currentItem.getMenuKey(), currentItem);
         }
         // close scanner
         scanner.close();
     }
     
-    private void writeInventory() throws ItemPersistenceException{
+    public void writeInventory() throws ItemPersistenceException{
         
         PrintWriter out;
 
@@ -114,17 +127,14 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
             out = new PrintWriter(new FileWriter(ITEM_FILE));
         } 
         catch (IOException e){
-            throw new ItemPersistenceException("Could not save inventory data.", e);
+            throw new ItemPersistenceException("Could not save inventory data.");
         }
         
         String itemAsText;
         List<Item> itemList = this.getAllItems();
         for (Item currentItem : itemList) {
-            // turn a Student into a String
             itemAsText = marshallItem(currentItem);
-            // write the Student object to the file
             out.println(itemAsText);
-            // force PrintWriter to write line to the file
             out.flush();
         }
         // Clean up
