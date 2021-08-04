@@ -6,6 +6,11 @@
 
 package com.jdm.vendingmachine.dao;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+
 
 /**
  *
@@ -14,10 +19,22 @@ package com.jdm.vendingmachine.dao;
  * 
  */
 public class VendingMachineAuditDaoImpl implements VendingMachineAuditDao {
-
+    public static final String AUDIT_FILE = "audit.txt";
+    
     @Override
-    public void writeAuditEntry() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void writeAuditEntry(String entry) throws ItemPersistenceException{
+        PrintWriter out;
+
+        try {
+            out = new PrintWriter(new FileWriter(AUDIT_FILE, true));
+        } catch (IOException e) {
+            throw new ItemPersistenceException("Could not persist audit information.");
+        }
+
+        LocalDateTime timestamp = LocalDateTime.now();
+        out.println(timestamp.toString() + " : " + entry);
+        out.flush();
+        }
     }
 
-}
+

@@ -36,6 +36,8 @@ public interface VendingMachineDao {
 
     public List<Item> getAllItems();
 
+    public BigDecimal getInsertedMoney();
+
    
     
     

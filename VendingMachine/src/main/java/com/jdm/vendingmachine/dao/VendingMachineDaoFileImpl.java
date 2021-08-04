@@ -41,6 +41,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         this.insertedMoney = money;
     }
     
+    
+    public BigDecimal getInsertedMoney() {
+        return insertedMoney;
+    }
+    
     @Override
     public BigDecimal returnInsertedMoney() {
         BigDecimal tmp = this.insertedMoney;

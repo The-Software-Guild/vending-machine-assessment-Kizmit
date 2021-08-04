@@ -42,7 +42,6 @@ public class VendingMachineView {
     }
 
 
-
     public void displayItemMenuChoices(List<Item> allItems) {
         String fItemString, fItemHeader;
         fItemHeader = String.format("%-10s%-30s%-10s%-5s\n", "Button", "Item Name", "Price", "Stock");

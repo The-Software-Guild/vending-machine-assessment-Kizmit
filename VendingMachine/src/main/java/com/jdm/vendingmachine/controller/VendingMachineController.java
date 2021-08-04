@@ -56,7 +56,7 @@ public class VendingMachineController {
         }
     }
 
-    private void makePurchase() {
+    private void makePurchase() throws ItemPersistenceException {
         Change change = null;
         boolean validInsert = false;
         try{ 
@@ -74,7 +74,7 @@ public class VendingMachineController {
         }
     }
 
-    private void handleChange(Change change) {
+    private void handleChange(Change change) throws ItemPersistenceException{
         if(change == null){ //VM errored out because of lack of funds/stock; return user money
             change = service.returnMoney();
         }

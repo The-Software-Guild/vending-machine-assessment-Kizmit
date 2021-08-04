@@ -10,5 +10,5 @@ package com.jdm.vendingmachine.dao;
  * @author Joe
  */
 public interface VendingMachineAuditDao {
-    public void writeAuditEntry();
+    public void writeAuditEntry(String entry) throws ItemPersistenceException;
 }
