@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.jdm.vendingmachine.service;
 
 import com.jdm.vendingmachine.dao.InsufficientFundsException;
@@ -25,7 +19,7 @@ import java.util.List;
  */
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer {
     private final VendingMachineDao dao;
-    private VendingMachineAuditDao auditDao;
+    private final VendingMachineAuditDao auditDao;
     
     public VendingMachineServiceLayerImpl(VendingMachineDao dao, VendingMachineAuditDao auditDao){
         this.dao = dao;
@@ -35,12 +29,12 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public boolean setInsertedMoney(BigDecimal money) throws OverPayException, InvalidInputException, ItemPersistenceException{
         //Check business rules here: negative values, too large of values
-        if(money.compareTo(new BigDecimal("50")) > 0){
-            auditDao.writeAuditEntry("USER INSERTED TOO MUCH MONEY, OVER-PAY EXCEPTION THROWN");
-            throw new OverPayException("Machine doesn't accept more than $50");
+        if(money.compareTo(new BigDecimal("5")) > 0){
+            auditDao.writeAuditEntry("USER INSERTED TOO MUCH MONEY, OVER-PAY EXCEPTION THROWN, FUNDS REJECTED");
+            throw new OverPayException("Machine doesn't accept more than $5");
         }
         else if(money.compareTo(new BigDecimal("0")) < 0){
-            auditDao.writeAuditEntry("USER INSERTED NEGATIVE MONEY, INVALID INPUT EXCEPTION THROWN");
+            auditDao.writeAuditEntry("USER INSERTED NEGATIVE MONEY, INVALID INPUT EXCEPTION THROWN, THIEF DENIED");
             throw new InvalidInputException("Invalid monetary amount, value is negative");
         }
         //call dao setinsertedmoney
@@ -63,7 +57,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         //If the user can afford and the item exists, remove item from stock, calculate/display the change
         else{
             dao.vendItem(choice);
-            auditDao.writeAuditEntry("ITEM "+ dao.getItem(choice) + " VENDED, CALCULATING AND RETURNING CHANGE");
+            auditDao.writeAuditEntry("ITEM "+ dao.getItem(choice).getName() + " VENDED, CALCULATING AND RETURNING CHANGE");
             return dao.calculateChange(choice);
         }
     }

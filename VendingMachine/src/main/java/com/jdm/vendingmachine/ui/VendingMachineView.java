@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.jdm.vendingmachine.ui;
 
 import com.jdm.vendingmachine.dto.Change;
 import com.jdm.vendingmachine.dto.Item;
+import com.jdm.vendingmachine.service.InvalidInputException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -33,8 +28,13 @@ public class VendingMachineView {
         return io.readInt("Select an action: ", 1,2);
     }
 
-    public BigDecimal inputMoney() {
-        return new BigDecimal(io.readString("Insert money: ")).setScale(MONEY_SCALE, RoundingMode.HALF_UP);
+    public BigDecimal inputMoney() throws InvalidInputException{
+        try{
+            return new BigDecimal(io.readString("Insert money: ")).setScale(MONEY_SCALE, RoundingMode.HALF_UP);
+        }
+        catch(NumberFormatException e){
+            throw new InvalidInputException("That is not a valid numerical value");
+        }
     }
 
     public void displayErrorMessage(String message) {

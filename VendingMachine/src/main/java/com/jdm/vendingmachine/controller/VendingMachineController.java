@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.jdm.vendingmachine.controller;
 
 import com.jdm.vendingmachine.dao.InsufficientFundsException;
@@ -14,7 +8,6 @@ import com.jdm.vendingmachine.service.InvalidInputException;
 import com.jdm.vendingmachine.service.OverPayException;
 import com.jdm.vendingmachine.service.VendingMachineServiceLayer;
 import com.jdm.vendingmachine.ui.VendingMachineView;
-import java.math.BigDecimal;
 
 /**
  *
@@ -23,8 +16,8 @@ import java.math.BigDecimal;
  * 
  */
 public class VendingMachineController {
-    private VendingMachineServiceLayer service;
-    private VendingMachineView view;
+    private final VendingMachineServiceLayer service;
+    private final VendingMachineView view;
     
     public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view){
         this.service = service;

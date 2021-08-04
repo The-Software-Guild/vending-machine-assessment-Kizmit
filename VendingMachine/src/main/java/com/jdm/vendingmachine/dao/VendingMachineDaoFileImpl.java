@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
  *
  * @author Joe McAdams
@@ -34,6 +33,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
     public VendingMachineDaoFileImpl(String ItemTextFile){ //For testing
         ITEM_FILE = ItemTextFile;
+        inventory = new HashMap<>();
     }
     
     @Override
@@ -101,18 +101,12 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         
         String currentLine;
         Item currentItem;
-        // Go through ITEM_FILE line by line, decoding each line into a 
-        // Student object by calling the unmarshallStudent method.
-        // Process while we have more lines in the file
+   
        
-        while (scanner.hasNextLine()){
-            // get the next line in the file
+        while (scanner.hasNextLine()){ 
             currentLine = scanner.nextLine();
-            // unmarshall the line into a Student
             currentItem = unmarshallItem(currentLine);
                
-            // We are going to use the student id as the map key for our student object.
-            // Put currentStudent into the map using student id as the key
             inventory.put(currentItem.getMenuKey(), currentItem);
         }
         // close scanner
