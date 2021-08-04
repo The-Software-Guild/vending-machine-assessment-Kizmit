@@ -7,7 +7,6 @@
 package com.jdm.vendingmachine.dto;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  *

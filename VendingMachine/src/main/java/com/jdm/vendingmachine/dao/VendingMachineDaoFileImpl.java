@@ -8,9 +8,6 @@ package com.jdm.vendingmachine.dao;
 
 import com.jdm.vendingmachine.dto.Change;
 import com.jdm.vendingmachine.dto.Item;
-import com.jdm.vendingmachine.ui.UserIO;
-import com.jdm.vendingmachine.ui.UserIOConsoleImpl;
-import com.jdm.vendingmachine.ui.VendingMachineView;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
