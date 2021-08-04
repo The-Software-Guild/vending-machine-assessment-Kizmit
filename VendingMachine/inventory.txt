@@ -1,3 +1,5 @@
-TestItem1::3.50::3::A1
-TestItem2::2.50::6::A2
-TestItem3::1.75::0::A3
+Snickers Bar::3.50::7::A1
+Butterfinger::2.50::7::A2
+Water::1.75::2::A3
+Pepsi::3.00::6::A4
+Coke::3.00::0::A5

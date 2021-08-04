@@ -70,7 +70,10 @@ public class VendingMachineController {
     private void handleChange(Change change) throws ItemPersistenceException{
         if(change == null){ //VM errored out because of lack of funds/stock; return user money
             change = service.returnMoney();
+            view.displayRefund(change);
         }
-        view.displayChange(change);
+        else{
+            view.displayChange(change);
+        }
     }
 }

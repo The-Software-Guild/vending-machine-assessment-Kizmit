@@ -64,5 +64,9 @@ public class VendingMachineView {
     public void displayVended() {
         io.print("ITEM VENDED. RETRIEVE ITEM FROM THE OPENING.");
     }
+
+    public void displayRefund(Change change) {
+        io.print("$" + change.getAmount() + " has been refunded to you.");
+    }
     
 }
